@@ -38,7 +38,7 @@ public class MorrisBoard : Board
         {
             // draw the ring
             GameObject ring = MakeRing(0, 0, (i + 1) * relativeRingScale, lineThickness);
-            ring.name += " " + i;    
+            ring.name += " " + i;
             ring.transform.SetParent(this.transform);
 
             for (int j = 0; j < spacesPerRing; j++)
@@ -51,18 +51,18 @@ public class MorrisBoard : Board
         if (bisectCenterRing)
         {
             // go inside center of the one ring
-            // up left to down right
-            x = relativeRingScale;
-            x2 = -relativeRingScale;
+            // vertical
+            x = relativeRingScale * numberOfRings;
+            x2 = -relativeRingScale * numberOfRings;
             y = 0;
             y2 = 0;
             MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
 
-            // up right to down left
+            // horizontal
             x = 0;
             x2 = 0;
-            y = relativeRingScale;
-            y2 = -relativeRingScale;
+            y = relativeRingScale * numberOfRings;
+            y2 = -relativeRingScale * numberOfRings;
             MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
 
             // while we're here, make the center space
@@ -103,25 +103,24 @@ public class MorrisBoard : Board
             MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
         }
 
-
         if (diagonalBisections)
         {
             // draw diagonals
-            if (numberOfRings == 1)
+            if (bisectCenterRing)
             {
                 // go inside center of the one ring
                 // up left to down right
-                x = relativeRingScale;
-                x2 = -relativeRingScale;
-                y = relativeRingScale;
-                y2 = -relativeRingScale;
+                x = relativeRingScale * numberOfRings;
+                x2 = -relativeRingScale * numberOfRings;
+                y = relativeRingScale * numberOfRings;
+                y2 = -relativeRingScale * numberOfRings;
                 MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
 
                 // up right to down left
-                x = -relativeRingScale;
-                x2 = relativeRingScale;
-                y = relativeRingScale;
-                y2 = -relativeRingScale;
+                x = -relativeRingScale * numberOfRings;
+                x2 = relativeRingScale * numberOfRings;
+                y = relativeRingScale * numberOfRings;
+                y2 = -relativeRingScale * numberOfRings;
                 MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
             }
             else
@@ -129,7 +128,7 @@ public class MorrisBoard : Board
                 // up right
                 y = relativeRingScale;
                 x = relativeRingScale;
-                x2 = numberOfRings* relativeRingScale;
+                x2 = numberOfRings * relativeRingScale;
                 y2 = numberOfRings * relativeRingScale;
                 MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
 
@@ -171,7 +170,8 @@ public class MorrisBoard : Board
     /// makes a square out of lines centered at centerX, centerY, 0 with a side length of 2 * width and a line thickness of thickness
     /// </summary>
     /// <returns>the ring gameobjecct</returns>
-    GameObject MakeRing(float centerX, float centerY, float width, float thickness) {
+    GameObject MakeRing(float centerX, float centerY, float width, float thickness)
+    {
         GameObject ring = new GameObject("ring");
         GameObject leftLine = MakeLine(centerX - width, centerY - width, centerX - width, centerY + width, thickness);
         leftLine.transform.SetParent(ring.transform);
