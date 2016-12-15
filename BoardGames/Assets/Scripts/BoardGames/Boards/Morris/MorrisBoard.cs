@@ -9,6 +9,7 @@ public class MorrisBoard : Board
     int numberOfRings = 3;
     [SerializeField]
     bool diagonalBisections = false;
+    [SerializeField]
     bool bisectCenterRing = false;
     Space[,] spaces;
     const int spacesPerRing = 8;
@@ -47,7 +48,7 @@ public class MorrisBoard : Board
         }
         // draw some edges
         float x, y, x2, y2;
-        if (numberOfRings == 1)
+        if (bisectCenterRing)
         {
             // go inside center of the one ring
             // up left to down right
