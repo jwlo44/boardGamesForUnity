@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BoardGames.util;
 using BoardGames.Games;
+using UnityEngine.UI;
 
 public class MorrisBoard : Board
 {
@@ -25,6 +26,8 @@ public class MorrisBoard : Board
     protected float relativeRingScale = 3;
     [SerializeField]
     protected float lineThickness = 5;
+    [SerializeField]
+    protected Text instructions;
 
     public float width { get { return numberOfRings * relativeRingScale * 2; } }
 
@@ -162,11 +165,9 @@ public class MorrisBoard : Board
         cam.initCamera(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnSpaceClickHandler()
     {
-        game.takeTurn();
-        Debug.Log(game.instruction);
+        
     }
 
     private void makeCenterSpace(GameObject centerRing)

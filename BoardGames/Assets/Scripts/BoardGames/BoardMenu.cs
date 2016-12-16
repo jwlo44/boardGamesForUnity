@@ -34,7 +34,9 @@ public class BoardMenu : EditorWindow {
         {
             DestroyImmediate(board);
         }
-        board = new GameObject(boardName);
+        GameObject boardPrefab = Resources.Load<GameObject>("board");
+        board = GameObject.Instantiate(boardPrefab);
+        board.name = boardName;
         switch(selectedBoardType)
         {
             case BoardTypes.GRID_BOARD:
@@ -58,7 +60,7 @@ public class BoardMenu : EditorWindow {
     void OnGUI()
     {
         GUILayout.Label("Base Settings", EditorStyles.boldLabel);
-        boardName = EditorGUILayout.TextField("Text Field", boardName);
+        boardName = EditorGUILayout.TextField("Board Name", boardName);
         selectedBoardType = (BoardTypes) EditorGUILayout.EnumPopup("Board Type", selectedBoardType);
         EditorGUILayout.Toggle("Replace previous board", shouldDeleteOldBoard);
         if (GUILayout.Button("Generate Board"))
