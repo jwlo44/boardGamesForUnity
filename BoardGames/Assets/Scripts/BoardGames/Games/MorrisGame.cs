@@ -65,7 +65,7 @@ namespace BoardGames.Games
                         space.piece = new MorrisPiece();
                         space.piece.owner = currentPlayer;
                         currentPlayer.placePiece();
-                        piecePlaced.Invoke(space);
+                        piecePlaced.Invoke(space, activePlayer1 ? 1 : 2);
                         takeTurn();
                         break;
                     }
@@ -173,8 +173,8 @@ namespace BoardGames.Games
                 instructionUpdated.Invoke();
             }
         }
-
-        public event SpaceTapHandler.SpaceEvent piecePlaced;
+        public delegate void SpacePlayerEvent(Space space, int PlayerNumber);
+        public event SpacePlayerEvent piecePlaced;
 
         public void init()
         {

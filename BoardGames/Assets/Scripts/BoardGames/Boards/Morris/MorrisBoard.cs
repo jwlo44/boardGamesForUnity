@@ -194,10 +194,20 @@ public class MorrisBoard : Board
         game.HandleSpaceClicked(space);
     }
 
-    private void OnPiecePlacedHandler(Space space)
+    private void OnPiecePlacedHandler(Space space, int playerNumber)
     {
-        // put a piece at that space
-        GameObject.Instantiate(player1PiecePrefab);
+        GameObject placedPiece;
+        if (playerNumber == 1)
+        {
+            // put a piece at that space
+            placedPiece = GameObject.Instantiate(player1PiecePrefab);
+        }
+        else
+        {
+            placedPiece = GameObject.Instantiate(player2PiecePrefab);
+        }
+        placedPiece.transform.position = space.gameObject.transform.position;
+        placedPiece.transform.SetParent(space.gameObject.transform);
     }
 
     private void makeCenterSpace(GameObject centerRing)
