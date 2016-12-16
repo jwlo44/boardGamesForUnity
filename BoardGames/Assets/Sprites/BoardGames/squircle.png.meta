@@ -1,14 +1,13 @@
 fileFormatVersion: 2
-guid: f3085992cb159484b9086f6324e7644e
-timeCreated: 1480286777
+guid: a311c67bba651db4abcaa935cd3e598d
+timeCreated: 1481917336
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: morris-ring_0
+  fileIDToRecycleName: {}
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -31,7 +30,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: 1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -42,34 +41,15 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
+  alignment: 6
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 4, y: 4, z: 4, w: 4}
-  spritePixelsToUnits: 64
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites:
-    - name: morris-ring_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline:
-      - - {x: -32, y: 32}
-        - {x: -32, y: -32}
-        - {x: 32, y: -32}
-        - {x: 32, y: 32}
-      - - {x: -24, y: 24}
-        - {x: 24, y: 24}
-        - {x: 24, y: -24}
-        - {x: -24, y: -24}
+    sprites: []
     outline: []
   spritePackingTag: 
   userData: 
