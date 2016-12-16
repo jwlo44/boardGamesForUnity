@@ -328,11 +328,9 @@ public class MorrisBoard : Board
 
             }
             // columns (within ring)
-            int column = space.getColumn() + 1;
-            if (column < spacesPerRing)
-            {
-                adjacentSpaces.Add(spaces[space.getRow(), column]);
-            }
+            int column = (space.getColumn() + 1) % spacesPerRing;
+            adjacentSpaces.Add(spaces[space.getRow(), column]);
+
             column = (space.getColumn() - 1);
             if (column == -1) { column = spacesPerRing - 1; }
             adjacentSpaces.Add(spaces[space.getRow(), column]);

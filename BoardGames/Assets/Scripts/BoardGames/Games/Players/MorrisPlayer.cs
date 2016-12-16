@@ -8,41 +8,36 @@ namespace BoardGames.Games.Players
 {
     public class MorrisPlayer : Player
     {
-        HashSet<MorrisPiece> placedPieces;
-        HashSet<MorrisPiece> unplacedPieces;
-        HashSet<MorrisPiece> deadPieces;
+        int placedPieces;
+        int unplacedPieces;
+        int deadPieces;
 
         public bool isPlacingPieces()
         {
-            return unplacedPieces.Count > 0;
+            return unplacedPieces > 0;
         }
         public bool isFlying()
         {
-            return placedPieces.Count == 3;
+            return placedPieces == 3;
         }
         
         public void placePiece()
         {
-            MorrisPiece placedPiece = unplacedPieces.First();
-            unplacedPieces.Remove(placedPiece);
-            placedPieces.Add(placedPiece);
+            unplacedPieces--;
+            placedPieces++;
         }
 
-        public void losePiece(MorrisPiece lostPiece)
+        public void losePiece()
         {
-            placedPieces.Remove(lostPiece);
-            deadPieces.Add(lostPiece);
+            placedPieces--;
+            deadPieces++;
         }
 
         public void init( int totalPieces = 9)
         {
-            placedPieces = new HashSet<MorrisPiece>();
-            deadPieces = new HashSet<MorrisPiece>();
-            unplacedPieces = new HashSet<MorrisPiece>();
-            for (int i = 0; i < totalPieces; i++)
-            {
-                unplacedPieces.Add(new MorrisPiece());
-            }
+            placedPieces = 0;
+            deadPieces = 0;
+            unplacedPieces = totalPieces;
         }
 
         public void takeTurn()
@@ -52,7 +47,7 @@ namespace BoardGames.Games.Players
 
         public bool lost()
         {
-            return placedPieces.Count < 3 && unplacedPieces.Count == 0;
+            return placedPieces < 3 && unplacedPieces == 0;
         }
     }
 }

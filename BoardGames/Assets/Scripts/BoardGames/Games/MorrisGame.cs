@@ -126,7 +126,8 @@ namespace BoardGames.Games
                         }
                         piecePounded.Invoke(space);
                         MorrisPlayer opponent = (MorrisPlayer)space.piece.owner;
-                        opponent.losePiece((MorrisPiece)space.piece);
+                        opponent.losePiece();
+                        space.piece = null;
                         takeTurn();
                         break;
                     }
