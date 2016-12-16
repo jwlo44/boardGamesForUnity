@@ -205,6 +205,8 @@ public class MorrisBoard : Board
         spr2.sortingOrder = 1;
         spaceObject.transform.position = new Vector3(xPosition * relativeRingScale * (i + 1), yPosition * relativeRingScale * (i + 1), 0);
         spaceObject.transform.SetParent(ring.transform);
+        SpaceTapHandler tap = spaceObject.GetComponent<SpaceTapHandler>();
+        tap.setSpace(space);
         return spaceObject;
     }
 }
