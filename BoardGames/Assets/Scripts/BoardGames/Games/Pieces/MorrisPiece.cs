@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BoardGames.Games.Pieces
 {
-    class MorrisPiece
+    public class MorrisPiece : Piece
     {
     }
 }

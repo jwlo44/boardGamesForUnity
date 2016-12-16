@@ -1,4 +1,6 @@
-﻿using BoardGames.Games.Players;
+﻿using BoardGames.Games.Pieces;
+using BoardGames.Games.Players;
+using System;
 
 namespace BoardGames.Games
 {
@@ -8,6 +10,16 @@ namespace BoardGames.Games
         private MorrisPlayer player2;
         private bool activePlayer1 = false;
         public string instruction = "";
+        private enum TurnStates
+        {
+            PLACE,
+            SELECT,
+            MOVE,
+            NONE,
+        }
+
+        private TurnStates turnState = TurnStates.NONE;
+        private Space selectedSpace;
 
         public Player getActivePlayer()
         {
@@ -28,27 +40,130 @@ namespace BoardGames.Games
             return player1.lost() || player2.lost();
         }
 
+        public void HandleSpaceClicked(Space space)
+        {
+           if (isOver())
+            {
+                return;
+            }
+           switch(turnState)
+            {
+                case TurnStates.PLACE:
+                    {
+                        if (space.piece != null)
+                        {
+                            break;
+                        }
+                        space.piece = new MorrisPiece();
+                        space.piece.owner = getActivePlayer();
+                        takeTurn();
+                        break;
+                    }
+                case TurnStates.SELECT:
+                    {
+                        if (space.piece == null || space.piece.owner != getActivePlayer())
+                        {
+                            break;
+                        }
+                        selectedSpace = space;
+                        turnState = TurnStates.MOVE;
+                        updateInstructions();
+                        break;
+                    }
+                case TurnStates.MOVE:
+                    {
+                        if (space.piece != null)
+                        {
+                            if (space.piece.owner == getActivePlayer())
+                            {
+                                selectedSpace = space;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        // do the move
+                        space.piece = selectedSpace.piece;
+                        selectedSpace.piece = null;
+                        // todo: update position
+                        takeTurn();
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+
+        }
+
         public void takeTurn()
         {
             activePlayer1 = !activePlayer1;
+            // update game state
+
             MorrisPlayer currentPlayer = (MorrisPlayer)getActivePlayer();
-            instruction = "Player " + (activePlayer1 ? "1: " : "2: ");
-            // what phase are we in?
             if (currentPlayer.isPlacingPieces())
             {
-                // phase 1: place pieces
-                instruction += "Tap an empty space to place a piece.";
-            }
-            else if (!currentPlayer.isFlying())
-            {
-                // phase 2: move pieces
-                instruction += "Select a piece to move.";
+                turnState = TurnStates.PLACE;
             }
             else
             {
-                // phase 3: fly!
+                turnState = TurnStates.MOVE;
+            }
+
+            updateInstructions();
+        }
+
+        public void updateInstructions()
+        {
+            if (isOver())
+            {
+                setInstruction(string.Format("Game over! Player {0} won!", getWinner() == player1 ? "1" : "2"));
+            }
+            else
+            {
+                MorrisPlayer currentPlayer = (MorrisPlayer)getActivePlayer();
+                instruction = "Player " + (activePlayer1 ? "1: " : "2: ");
+                // what phase are we in?
+                if (currentPlayer.isPlacingPieces())
+                {
+                    // phase 1: place pieces
+                    instruction += "Tap an empty space to place a piece.";
+                }
+                else
+                {
+                    if (turnState == TurnStates.MOVE)
+                    {
+                        instruction += "Select an empty space to move to.";
+                    }
+                    else
+                    {
+                        // phase 2: move pieces
+                        instruction += "Select a piece to move";
+                        if (currentPlayer.isFlying())
+                        {
+                            // phase 3: fly!
+                            instruction += " anywhere!";
+                        }
+                    }
+                }
+                setInstruction(instruction);
             }
         }
+
+        public event Action instructionUpdated;
+
+        private void setInstruction(string instruction)
+        {
+            this.instruction = instruction;
+            if (instructionUpdated != null)
+            {
+                instructionUpdated.Invoke();
+            }
+        }
+
 
         public void init()
         {
@@ -56,6 +171,7 @@ namespace BoardGames.Games
             player2 = new MorrisPlayer();
             player1.init();
             player2.init();
+            takeTurn();
         }
     }
 }

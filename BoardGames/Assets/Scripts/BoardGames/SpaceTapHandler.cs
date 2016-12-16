@@ -5,11 +5,17 @@ using System;
 using UnityEngine.Events;
 
 public class SpaceTapHandler : MonoBehaviour, IPointerClickHandler {
-    public event Action onClick;
+
+    public delegate void SpaceClickEvent(Space space);
+    public event SpaceClickEvent onClick;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log(string.Format("clicked space {0} on ring {1}.", thisSpace.getColumn(), thisSpace.getRow()));
-        onClick.Invoke();
+        if (onClick != null)
+        {
+            onClick.Invoke(thisSpace);
+        }
     }
     public void setSpace(Space space) { thisSpace = space; }
     private Space thisSpace;

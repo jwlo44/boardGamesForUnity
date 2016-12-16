@@ -37,6 +37,8 @@ public class MorrisBoard : Board
     // Use this for initialization
     void Start()
     {
+        game = new MorrisGame();
+
         spaces = new Space[numberOfRings, spacesPerRing];
         for (int i = 0; i < numberOfRings; i++)
         {
@@ -157,17 +159,32 @@ public class MorrisBoard : Board
             }
         }
 
-        game = new MorrisGame();
-        game.init();
-
-        // finally, init camera
+        //  init camera
         MorrisCamera cam = new MorrisCamera();
         cam.initCamera(this);
+
+        // subscribe to events
+        game.instructionUpdated += OnInstructionUpdatedHandler;
+
+        // init game
+        game.init();
     }
 
-    private void OnSpaceClickHandler()
+    void OnDestroy()
     {
-        
+        // unsubscribe
+        game.instructionUpdated -= OnInstructionUpdatedHandler;
+    }
+
+    private void OnInstructionUpdatedHandler()
+    {
+        instructions.text = game.instruction;
+    }
+
+
+    private void OnSpaceClickHandler(Space space)
+    {
+        game.HandleSpaceClicked(space);
     }
 
     private void makeCenterSpace(GameObject centerRing)
@@ -181,6 +198,7 @@ public class MorrisBoard : Board
         centerSpace.transform.SetParent(centerRing.transform);
         SpaceTapHandler tap = centerSpace.GetComponent<SpaceTapHandler>();
         tap.setSpace(space);
+        tap.onClick += OnSpaceClickHandler;
     }
 
     private GameObject makeSpace(int i, int j, GameObject ring)
@@ -220,6 +238,7 @@ public class MorrisBoard : Board
         spaceObject.transform.SetParent(ring.transform);
         SpaceTapHandler tap = spaceObject.GetComponent<SpaceTapHandler>();
         tap.setSpace(space);
+        tap.onClick += OnSpaceClickHandler;
         return spaceObject;
     }
 }
