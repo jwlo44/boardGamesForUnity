@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using BoardGames.util;
+using BoardGames.Games;
 
 public class MorrisBoard : Board
 {
@@ -27,9 +28,7 @@ public class MorrisBoard : Board
 
     public float width { get { return numberOfRings * relativeRingScale * 2; } }
 
-    // a space in morris is determined by that space's ring and the position on the ring.
-    // ring indices start at 0 for the innermost ring
-
+    public MorrisGame game;
 
     // Use this for initialization
     void Start()
@@ -156,6 +155,9 @@ public class MorrisBoard : Board
             }
         }
 
+        game = new MorrisGame();
+        game.init();
+
         // finally, init camera
         MorrisCamera cam = new MorrisCamera();
         cam.initCamera(this);
@@ -164,7 +166,8 @@ public class MorrisBoard : Board
     // Update is called once per frame
     void Update()
     {
-
+        game.takeTurn();
+        Debug.Log(game.instruction);
     }
 
     private GameObject makeSpace(int i, int j, GameObject ring)

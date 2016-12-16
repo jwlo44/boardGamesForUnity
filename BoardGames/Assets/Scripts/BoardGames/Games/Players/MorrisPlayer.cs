@@ -27,6 +27,7 @@ namespace BoardGames.Games.Players
         {
             placedPieces = new HashSet<MorrisPiece>();
             deadPieces = new HashSet<MorrisPiece>();
+            unplacedPieces = new HashSet<MorrisPiece>();
             for (int i = 0; i < totalPieces; i++)
             {
                 unplacedPieces.Add(new MorrisPiece());

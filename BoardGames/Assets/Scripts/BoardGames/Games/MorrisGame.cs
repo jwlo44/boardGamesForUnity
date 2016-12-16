@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using BoardGames.Games.Players;
+﻿using BoardGames.Games.Players;
 
 namespace BoardGames.Games
 {
@@ -11,7 +7,7 @@ namespace BoardGames.Games
         private MorrisPlayer player1;
         private MorrisPlayer player2;
         private bool activePlayer1 = false;
-        private string instruction = "";
+        public string instruction = "";
 
         public Player getActivePlayer()
         {
@@ -56,6 +52,8 @@ namespace BoardGames.Games
 
         public void init()
         {
+            player1 = new MorrisPlayer();
+            player2 = new MorrisPlayer();
             player1.init();
             player2.init();
         }
