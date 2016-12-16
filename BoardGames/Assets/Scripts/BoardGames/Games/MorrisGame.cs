@@ -4,12 +4,14 @@ using System;
 
 namespace BoardGames.Games
 {
+    // game handles game logic
     public class MorrisGame : IGame
     {
         private MorrisPlayer player1;
         private MorrisPlayer player2;
         private bool activePlayer1 = false;
         public string instruction = "";
+        public int piecesPerPlayer = 9;
         private enum TurnStates
         {
             PLACE,
@@ -20,6 +22,11 @@ namespace BoardGames.Games
 
         private TurnStates turnState = TurnStates.NONE;
         private Space selectedSpace;
+
+        public MorrisGame(int piecesPerPlayer)
+        {
+            this.piecesPerPlayer = piecesPerPlayer;
+        }
 
         public Player getActivePlayer()
         {
@@ -164,13 +171,12 @@ namespace BoardGames.Games
             }
         }
 
-
         public void init()
         {
             player1 = new MorrisPlayer();
             player2 = new MorrisPlayer();
-            player1.init();
-            player2.init();
+            player1.init(piecesPerPlayer);
+            player2.init(piecesPerPlayer);
             takeTurn();
         }
     }

@@ -21,9 +21,7 @@ namespace BoardGames.Games.Players
             return placedPieces.Count == 3;
         }
 
-        protected int totalPieces = 9;
-
-        public void init()
+        public void init( int totalPieces = 9)
         {
             placedPieces = new HashSet<MorrisPiece>();
             deadPieces = new HashSet<MorrisPiece>();

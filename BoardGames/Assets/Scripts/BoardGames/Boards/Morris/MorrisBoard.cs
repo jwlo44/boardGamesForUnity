@@ -5,6 +5,8 @@ using BoardGames.util;
 using BoardGames.Games;
 using UnityEngine.UI;
 
+
+// board controls visuals and input
 public class MorrisBoard : Board
 {
 
@@ -14,12 +16,12 @@ public class MorrisBoard : Board
     bool diagonalBisections = false;
     [SerializeField]
     bool bisectCenterRing = false;
+    [SerializeField]
+    int piecesPerPlayer = 9;
     Space[,] spaces;
     const int spacesPerRing = 8;
     [SerializeField]
     protected GameObject spacePrefab;
-    [SerializeField]
-    protected Sprite ringSprite;
     [SerializeField]
     protected Sprite lineSprite;
     [SerializeField]
@@ -37,7 +39,7 @@ public class MorrisBoard : Board
     // Use this for initialization
     void Start()
     {
-        game = new MorrisGame();
+        game = new MorrisGame(piecesPerPlayer);
 
         spaces = new Space[numberOfRings, spacesPerRing];
         for (int i = 0; i < numberOfRings; i++)
