@@ -163,6 +163,11 @@ public class MorrisBoard : Board
                 LineDrawer.MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
             }
         }
+        // set up adjacency lists
+        foreach (Space space in spaces)
+        {
+            space.adjacentSpaces = getAdjacentSpaces(space);
+        }
 
         //  init camera
         MorrisCamera cam = new MorrisCamera();
@@ -231,7 +236,6 @@ public class MorrisBoard : Board
         SpaceTapHandler tap = centerSpace.GetComponent<SpaceTapHandler>();
         tap.setSpace(space);
         tap.onClick += OnSpaceClickHandler;
-        space.adjacentSpaces = getAdjacentSpaces(space);
     }
 
     private GameObject makeSpace(int i, int j, GameObject ring)
@@ -276,13 +280,12 @@ public class MorrisBoard : Board
         SpaceTapHandler tap = spaceObject.GetComponent<SpaceTapHandler>();
         tap.setSpace(space);
         tap.onClick += OnSpaceClickHandler;
-        space.adjacentSpaces = getAdjacentSpaces(space);
         return spaceObject;
     }
 
-    private HashSet<Space> getAdjacentSpaces(Space space)
+    private List<Space> getAdjacentSpaces(Space space)
     {
-        HashSet<Space> adjacentSpaces = new HashSet<Space>();
+        List<Space> adjacentSpaces = new List<Space>();
         if (isCenterSpace(space))
         {
             if (diagonalBisections)
@@ -323,8 +326,8 @@ public class MorrisBoard : Board
             {
                 adjacentSpaces.Add(spaces[space.getRow(), column]);
             }
-            column = space.getColumn() - 1;
-            if (column >= 0 || (column == -1 && bisectCenterRing))
+            column = (space.getColumn() - 1) % spacesPerRing;
+            if (column >= 0 )
             {
                 adjacentSpaces.Add(spaces[space.getRow(), column]);
             }
@@ -334,10 +337,10 @@ public class MorrisBoard : Board
 
     private bool isCornerSpace(Space space)
     {
-        return space.getRow() % 2 == 0;
+        return space.getColumn() % 2 == 0;
     }
     private bool isCenterSpace(Space space)
     {
-        return space.getColumn() == -1;
+        return space.getRow() == -1;
     }
 }

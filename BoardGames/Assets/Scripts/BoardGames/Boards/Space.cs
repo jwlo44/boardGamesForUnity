@@ -10,5 +10,5 @@ public class Space {
     public int getRow() { return row; }
     public int getColumn() { return column; }
     public Piece piece;
-    public HashSet<Space> adjacentSpaces;
+    public List<Space> adjacentSpaces;
 }
