@@ -28,6 +28,12 @@ namespace BoardGames.Games.Players
             placedPieces.Add(placedPiece);
         }
 
+        public void losePiece(MorrisPiece lostPiece)
+        {
+            placedPieces.Remove(lostPiece);
+            deadPieces.Add(lostPiece);
+        }
+
         public void init( int totalPieces = 9)
         {
             placedPieces = new HashSet<MorrisPiece>();

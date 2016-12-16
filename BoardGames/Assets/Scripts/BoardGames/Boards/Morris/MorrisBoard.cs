@@ -177,6 +177,7 @@ public class MorrisBoard : Board
         game.instructionUpdated += OnInstructionUpdatedHandler;
         game.piecePlaced += OnPiecePlacedHandler;
         game.movedPiece += OnPieceMovedHandler;
+        game.piecePounded += OnPiecePoundedHandler;
 
         // init game
         game.init();
@@ -188,6 +189,7 @@ public class MorrisBoard : Board
         game.instructionUpdated -= OnInstructionUpdatedHandler;
         game.piecePlaced -= OnPiecePlacedHandler;
         game.movedPiece -= OnPieceMovedHandler;
+        game.piecePounded -= OnPiecePoundedHandler;
     }
 
     private void OnInstructionUpdatedHandler()
@@ -224,6 +226,11 @@ public class MorrisBoard : Board
         from.piece.gameObject.transform.position = to.gameObject.transform.position;
     }
 
+    private void OnPiecePoundedHandler(Space space)
+    {
+        Destroy(space.piece.gameObject);
+    }
+
     private void makeCenterSpace(GameObject centerRing)
     {
         Space space = new Space(-1, -1);
@@ -256,7 +263,7 @@ public class MorrisBoard : Board
             xPosition = j % 3 - 1;
         }
 
-        else if (j > 3 &&  j < 7)
+        else if (j > 3 && j < 7)
         {
             yPosition = -1;
             xPosition = -(j - 5);
@@ -326,11 +333,9 @@ public class MorrisBoard : Board
             {
                 adjacentSpaces.Add(spaces[space.getRow(), column]);
             }
-            column = (space.getColumn() - 1) % spacesPerRing;
-            if (column >= 0 )
-            {
-                adjacentSpaces.Add(spaces[space.getRow(), column]);
-            }
+            column = (space.getColumn() - 1);
+            if (column == -1) { column = spacesPerRing - 1; }
+            adjacentSpaces.Add(spaces[space.getRow(), column]);
         }
         return adjacentSpaces;
     }

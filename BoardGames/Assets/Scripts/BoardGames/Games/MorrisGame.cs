@@ -1,6 +1,7 @@
 ﻿using BoardGames.Games.Pieces;
 using BoardGames.Games.Players;
 using System;
+using System.Linq;
 
 namespace BoardGames.Games
 {
@@ -17,6 +18,7 @@ namespace BoardGames.Games
             PLACE,
             SELECT,
             MOVE,
+            POUND,
             NONE,
         }
 
@@ -103,6 +105,28 @@ namespace BoardGames.Games
                         movedPiece.Invoke(from: selectedSpace, to: space);
                         space.piece = selectedSpace.piece;
                         selectedSpace.piece = null;
+                        if (isMill(space))
+                        {
+                            turnState = TurnStates.POUND;
+                            updateInstructions();
+                            break;
+                        }
+                        else
+                        {
+                            takeTurn();
+                            break;
+                        }
+                    }
+                case TurnStates.POUND:
+                    {
+                        MorrisPlayer currentPlayer = (MorrisPlayer)getActivePlayer();
+                        if (space.piece == null || space.piece.owner == currentPlayer)
+                        {
+                            break;
+                        }
+                        piecePounded.Invoke(space);
+                        MorrisPlayer opponent = (MorrisPlayer)space.piece.owner;
+                        opponent.losePiece((MorrisPiece)space.piece);
                         takeTurn();
                         break;
                     }
@@ -112,6 +136,11 @@ namespace BoardGames.Games
                     }
             }
 
+        }
+
+        private bool isMill(Space space)
+        {
+            return space.adjacentSpaces.Where((s) => s.piece != null && s.piece.owner == getActivePlayer()).Count() >= 2;
         }
 
         public void takeTurn()
@@ -154,7 +183,7 @@ namespace BoardGames.Games
                     {
                         instruction += "Select an empty space to move to.";
                     }
-                    else
+                    else if (turnState == TurnStates.SELECT)
                     {
                         // phase 2: move pieces
                         instruction += "Select a piece to move";
@@ -163,6 +192,10 @@ namespace BoardGames.Games
                             // phase 3: fly!
                             instruction += " anywhere!";
                         }
+                    }
+                    else // POUND!
+                    {
+                        instruction += "Select an opponent's piece to pound!";
                     }
                 }
                 setInstruction(instruction);
@@ -184,6 +217,8 @@ namespace BoardGames.Games
 
         public delegate void MoveEvent(Space from, Space to);
         public event MoveEvent movedPiece;
+
+        public event SpaceTapHandler.SpaceEvent piecePounded;
 
         public void init()
         {
