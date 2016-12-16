@@ -16,7 +16,7 @@ public class MorrisBoard : Board
     Space[,] spaces;
     const int spacesPerRing = 8;
     [SerializeField]
-    protected Sprite spaceSprite;
+    protected GameObject spacePrefab;
     [SerializeField]
     protected Sprite ringSprite;
     [SerializeField]
@@ -174,7 +174,8 @@ public class MorrisBoard : Board
     {
         // draw the spaces on the ring
         Space space = new Space(i, j);
-        GameObject spaceObject = new GameObject(string.Format("Space {0} on ring {1}", j, i));
+        GameObject spaceObject = GameObject.Instantiate(spacePrefab);
+        spaceObject.name  = string.Format("Space {0} on ring {1}", j, i);
         space.gameObject = spaceObject;
         spaces[i, j] = space;
         int xPosition, yPosition;
@@ -200,8 +201,7 @@ public class MorrisBoard : Board
             yPosition = -1;
             xPosition = j % 3 - 1;
         }
-        SpriteRenderer spr2 = spaceObject.AddComponent<SpriteRenderer>();
-        spr2.sprite = spaceSprite;
+        SpriteRenderer spr2 = spaceObject.GetComponent<SpriteRenderer>();
         spr2.sortingOrder = 1;
         spaceObject.transform.position = new Vector3(xPosition * relativeRingScale * (i + 1), yPosition * relativeRingScale * (i + 1), 0);
         spaceObject.transform.SetParent(ring.transform);
