@@ -30,6 +30,7 @@ public class MorrisBoard : Board
 
     public MorrisGame game;
 
+    private GameObject centerSpace = null;
     // Use this for initialization
     void Start()
     {
@@ -66,9 +67,7 @@ public class MorrisBoard : Board
             LineDrawer.MakeLine(x, y, x2, y2, lineThickness).transform.SetParent(this.transform);
 
             // while we're here, make the center space
-            GameObject centerspace = makeSpace(0, 0, this.gameObject);
-            centerspace.name = "center space";
-            centerspace.transform.position = Vector3.zero;
+            makeCenterSpace(this.gameObject);
         }
         else
         {
@@ -170,12 +169,25 @@ public class MorrisBoard : Board
         Debug.Log(game.instruction);
     }
 
+    private void makeCenterSpace(GameObject centerRing)
+    {
+        Space space = new Space(-1, -1);
+        centerSpace = GameObject.Instantiate(spacePrefab);
+        centerSpace.name = "center space";
+        centerSpace.transform.position = Vector3.zero;
+        SpriteRenderer spr2 = centerSpace.GetComponent<SpriteRenderer>();
+        spr2.sortingOrder = 1;
+        centerSpace.transform.SetParent(centerRing.transform);
+        SpaceTapHandler tap = centerSpace.GetComponent<SpaceTapHandler>();
+        tap.setSpace(space);
+    }
+
     private GameObject makeSpace(int i, int j, GameObject ring)
     {
         // draw the spaces on the ring
         Space space = new Space(i, j);
         GameObject spaceObject = GameObject.Instantiate(spacePrefab);
-        spaceObject.name  = string.Format("Space {0} on ring {1}", j, i);
+        spaceObject.name = string.Format("Space {0} on ring {1}", j, i);
         space.gameObject = spaceObject;
         spaces[i, j] = space;
         int xPosition, yPosition;
