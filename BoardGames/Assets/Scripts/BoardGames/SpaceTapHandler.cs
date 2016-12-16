@@ -6,8 +6,8 @@ using UnityEngine.Events;
 
 public class SpaceTapHandler : MonoBehaviour, IPointerClickHandler {
 
-    public delegate void SpaceClickEvent(Space space);
-    public event SpaceClickEvent onClick;
+    public delegate void SpaceEvent(Space space);
+    public event SpaceEvent onClick;
 
     public void OnPointerClick(PointerEventData eventData)
     {

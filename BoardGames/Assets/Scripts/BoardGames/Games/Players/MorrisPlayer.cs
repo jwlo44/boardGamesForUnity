@@ -20,6 +20,13 @@ namespace BoardGames.Games.Players
         {
             return placedPieces.Count == 3;
         }
+        
+        public void placePiece()
+        {
+            MorrisPiece placedPiece = unplacedPieces.First();
+            unplacedPieces.Remove(placedPiece);
+            placedPieces.Add(placedPiece);
+        }
 
         public void init( int totalPieces = 9)
         {

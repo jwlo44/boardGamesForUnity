@@ -9,7 +9,6 @@ using UnityEngine.UI;
 // board controls visuals and input
 public class MorrisBoard : Board
 {
-
     [SerializeField]
     int numberOfRings = 3;
     [SerializeField]
@@ -22,6 +21,10 @@ public class MorrisBoard : Board
     const int spacesPerRing = 8;
     [SerializeField]
     protected GameObject spacePrefab;
+    [SerializeField]
+    protected GameObject player1PiecePrefab;
+    [SerializeField]
+    protected GameObject player2PiecePrefab;
     [SerializeField]
     protected Sprite lineSprite;
     [SerializeField]
@@ -167,6 +170,7 @@ public class MorrisBoard : Board
 
         // subscribe to events
         game.instructionUpdated += OnInstructionUpdatedHandler;
+        game.piecePlaced += OnPiecePlacedHandler;
 
         // init game
         game.init();
@@ -176,6 +180,7 @@ public class MorrisBoard : Board
     {
         // unsubscribe
         game.instructionUpdated -= OnInstructionUpdatedHandler;
+        game.piecePlaced -= OnPiecePlacedHandler;
     }
 
     private void OnInstructionUpdatedHandler()
@@ -187,6 +192,12 @@ public class MorrisBoard : Board
     private void OnSpaceClickHandler(Space space)
     {
         game.HandleSpaceClicked(space);
+    }
+
+    private void OnPiecePlacedHandler(Space space)
+    {
+        // put a piece at that space
+        GameObject.Instantiate(player1PiecePrefab);
     }
 
     private void makeCenterSpace(GameObject centerRing)
