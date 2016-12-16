@@ -82,9 +82,10 @@ namespace BoardGames.Games
                     }
                 case TurnStates.MOVE:
                     {
+                        MorrisPlayer currentPlayer = (MorrisPlayer)getActivePlayer();
                         if (space.piece != null)
                         {
-                            if (space.piece.owner == getActivePlayer())
+                            if (space.piece.owner == currentPlayer)
                             {
                                 selectedSpace = space;
                                 break;
@@ -93,6 +94,10 @@ namespace BoardGames.Games
                             {
                                 break;
                             }
+                        }
+                        if (!selectedSpace.adjacentSpaces.Contains(space) && !currentPlayer.isFlying())
+                        {
+                            break;
                         }
                         // do the move
                         movedPiece.Invoke(from: selectedSpace, to: space);

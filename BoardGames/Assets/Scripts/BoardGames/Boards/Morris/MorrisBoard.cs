@@ -242,28 +242,32 @@ public class MorrisBoard : Board
         spaceObject.name = string.Format("Space {0} on ring {1}", j, i);
         space.gameObject = spaceObject;
         spaces[i, j] = space;
+        // 0 1 2
+        // 7   3
+        // 6 5 4
         int xPosition, yPosition;
         if (j < 3)
         {
             yPosition = 1;
             xPosition = j % 3 - 1;
         }
-        else if (j < 5)
+
+        else if (j > 3 &&  j < 7)
+        {
+            yPosition = -1;
+            xPosition = -(j - 5);
+        }
+        else // 7 or 3
         {
             yPosition = 0;
             if (j == 3)
             {
-                xPosition = -1;
-            }
-            else
-            {
                 xPosition = 1;
             }
-        }
-        else
-        {
-            yPosition = -1;
-            xPosition = j % 3 - 1;
+            else // 7
+            {
+                xPosition = -1;
+            }
         }
         SpriteRenderer spr2 = spaceObject.GetComponent<SpriteRenderer>();
         spr2.sortingOrder = 1;
@@ -300,29 +304,29 @@ public class MorrisBoard : Board
         {
             if (diagonalBisections || !isCornerSpace(space))
             {
-                // columns
-                int column = space.getColumn() + 1;
-                if (column < numberOfRings)
+                // rows (rings)
+                int row = space.getRow() + 1;
+                if (row < numberOfRings)
                 {
-                    adjacentSpaces.Add(spaces[column, space.getRow()]);
+                    adjacentSpaces.Add(spaces[row, space.getColumn()]);
                 }
-                column = space.getColumn() - 1;
-                if (column >= 0 || (bisectCenterRing && column == -1))
+                row = space.getRow() - 1;
+                if (row >= 0 || (bisectCenterRing && row == -1))
                 {
-                    adjacentSpaces.Add(spaces[column, space.getRow()]);
+                    adjacentSpaces.Add(spaces[row, space.getColumn()]);
                 }
 
             }
-            // rows
-            int row = space.getRow() + 1;
-            if (row < spacesPerRing)
+            // columns (within ring)
+            int column = space.getColumn() + 1;
+            if (column < spacesPerRing)
             {
-                adjacentSpaces.Add(spaces[space.getColumn(), row]);
+                adjacentSpaces.Add(spaces[space.getRow(), column]);
             }
-            row = space.getRow() - 1;
-            if (row >= 0 || (row == -1 && bisectCenterRing))
+            column = space.getColumn() - 1;
+            if (column >= 0 || (column == -1 && bisectCenterRing))
             {
-                adjacentSpaces.Add(spaces[space.getColumn(), row]);
+                adjacentSpaces.Add(spaces[space.getRow(), column]);
             }
         }
         return adjacentSpaces;
