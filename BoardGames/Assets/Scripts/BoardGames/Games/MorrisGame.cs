@@ -30,7 +30,7 @@ namespace BoardGames.Games
 
         public Player getActivePlayer()
         {
-            return activePlayer1 ? player1 : player1;
+            return activePlayer1 ? player1 : player2;
         }
 
         public Player getWinner()
@@ -87,6 +87,7 @@ namespace BoardGames.Games
                             if (space.piece.owner == getActivePlayer())
                             {
                                 selectedSpace = space;
+                                break;
                             }
                             else
                             {
@@ -94,9 +95,9 @@ namespace BoardGames.Games
                             }
                         }
                         // do the move
+                        movedPiece.Invoke(from: selectedSpace, to: space);
                         space.piece = selectedSpace.piece;
                         selectedSpace.piece = null;
-                        // todo: update position
                         takeTurn();
                         break;
                     }
@@ -120,7 +121,7 @@ namespace BoardGames.Games
             }
             else
             {
-                turnState = TurnStates.MOVE;
+                turnState = TurnStates.SELECT;
             }
 
             updateInstructions();
@@ -175,6 +176,9 @@ namespace BoardGames.Games
         }
         public delegate void SpacePlayerEvent(Space space, int PlayerNumber);
         public event SpacePlayerEvent piecePlaced;
+
+        public delegate void MoveEvent(Space from, Space to);
+        public event MoveEvent movedPiece;
 
         public void init()
         {

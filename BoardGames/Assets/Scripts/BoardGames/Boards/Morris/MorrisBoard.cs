@@ -171,6 +171,7 @@ public class MorrisBoard : Board
         // subscribe to events
         game.instructionUpdated += OnInstructionUpdatedHandler;
         game.piecePlaced += OnPiecePlacedHandler;
+        game.movedPiece += OnPieceMovedHandler;
 
         // init game
         game.init();
@@ -181,6 +182,7 @@ public class MorrisBoard : Board
         // unsubscribe
         game.instructionUpdated -= OnInstructionUpdatedHandler;
         game.piecePlaced -= OnPiecePlacedHandler;
+        game.movedPiece -= OnPieceMovedHandler;
     }
 
     private void OnInstructionUpdatedHandler()
@@ -208,6 +210,13 @@ public class MorrisBoard : Board
         }
         placedPiece.transform.position = space.gameObject.transform.position;
         placedPiece.transform.SetParent(space.gameObject.transform);
+        space.piece.gameObject = placedPiece;
+    }
+
+    private void OnPieceMovedHandler(Space from, Space to)
+    {
+        from.piece.gameObject.transform.SetParent(to.gameObject.transform);
+        from.piece.gameObject.transform.position = to.gameObject.transform.position;
     }
 
     private void makeCenterSpace(GameObject centerRing)
