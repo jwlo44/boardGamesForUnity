@@ -273,4 +273,65 @@ public class MorrisBoard : Board
         tap.onClick += OnSpaceClickHandler;
         return spaceObject;
     }
+
+    private HashSet<Space> getAdjacentSpaces(Space space)
+    {
+        HashSet<Space> adjacentSpaces = new HashSet<Space>();
+        if (isCenterSpace(space))
+        {
+            if (diagonalBisections)
+            {
+                for (int i = 0; i < spacesPerRing; i++)
+                {
+                    adjacentSpaces.Add(spaces[0, i]);
+                }
+            }
+            else
+            {
+                for (int i = 1; i < spacesPerRing; i += 2)
+                {
+                    adjacentSpaces.Add(spaces[0, i]);
+                }
+            }
+        }
+        else
+        {
+            if (diagonalBisections || !isCornerSpace(space))
+            {
+                // columns
+                int column = space.getColumn() + 1;
+                if (column < numberOfRings)
+                {
+                    adjacentSpaces.Add(spaces[column, space.getRow()]);
+                }
+                column = space.getColumn() - 1;
+                if (column >= 0 || (bisectCenterRing && column == -1))
+                {
+                    adjacentSpaces.Add(spaces[column, space.getRow()]);
+                }
+
+            }
+            // rows
+            int row = space.getRow() + 1;
+            if (row < spacesPerRing)
+            {
+                adjacentSpaces.Add(spaces[space.getColumn(), row]);
+            }
+            row = space.getRow() - 1;
+            if (row >= 0 || (row == -1 && bisectCenterRing))
+            {
+                adjacentSpaces.Add(spaces[space.getColumn(), row]);
+            }
+        }
+        return adjacentSpaces;
+    }
+
+    private bool isCornerSpace(Space space)
+    {
+        return space.getRow() % 2 == 0;
+    }
+    private bool isCenterSpace(Space space)
+    {
+        return space.getColumn() == -1;
+    }
 }
