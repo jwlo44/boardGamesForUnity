@@ -231,6 +231,7 @@ public class MorrisBoard : Board
         SpaceTapHandler tap = centerSpace.GetComponent<SpaceTapHandler>();
         tap.setSpace(space);
         tap.onClick += OnSpaceClickHandler;
+        space.adjacentSpaces = getAdjacentSpaces(space);
     }
 
     private GameObject makeSpace(int i, int j, GameObject ring)
@@ -271,6 +272,7 @@ public class MorrisBoard : Board
         SpaceTapHandler tap = spaceObject.GetComponent<SpaceTapHandler>();
         tap.setSpace(space);
         tap.onClick += OnSpaceClickHandler;
+        space.adjacentSpaces = getAdjacentSpaces(space);
         return spaceObject;
     }
 

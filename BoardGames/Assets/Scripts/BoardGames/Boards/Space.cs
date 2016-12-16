@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using BoardGames.Games.Pieces;
+using System.Collections.Generic;
 
 public class Space {
     int row;
@@ -9,4 +10,5 @@ public class Space {
     public int getRow() { return row; }
     public int getColumn() { return column; }
     public Piece piece;
+    public HashSet<Space> adjacentSpaces;
 }
